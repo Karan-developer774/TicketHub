@@ -70,8 +70,6 @@ export const useAuthStore = create<AuthState>((set, get) => ({
       get().fetchProfile(session.user.id);
       get().fetchRole(session.user.id);
     }
-
-    return () => subscription.unsubscribe();
   },
 
   signIn: async (email: string, password: string) => {
