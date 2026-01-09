@@ -7,8 +7,12 @@ export default {
   theme: {
     container: {
       center: true,
-      padding: "2rem",
+      padding: "1rem",
       screens: {
+        sm: "640px",
+        md: "768px",
+        lg: "1024px",
+        xl: "1280px",
         "2xl": "1400px",
       },
     },
@@ -49,6 +53,10 @@ export default {
           DEFAULT: "hsl(var(--warning))",
           foreground: "hsl(var(--warning-foreground))",
         },
+        info: {
+          DEFAULT: "hsl(var(--info))",
+          foreground: "hsl(var(--info-foreground))",
+        },
         muted: {
           DEFAULT: "hsl(var(--muted))",
           foreground: "hsl(var(--muted-foreground))",
@@ -56,6 +64,7 @@ export default {
         accent: {
           DEFAULT: "hsl(var(--accent))",
           foreground: "hsl(var(--accent-foreground))",
+          glow: "hsl(var(--accent-glow))",
         },
         popover: {
           DEFAULT: "hsl(var(--popover))",
@@ -65,18 +74,18 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
-        chat: {
-          hover: "hsl(var(--chat-hover))",
-          active: "hsl(var(--chat-active))",
+        // Category colors
+        movie: "hsl(var(--movie))",
+        event: "hsl(var(--event))",
+        travel: "hsl(var(--travel))",
+        // Seat colors
+        seat: {
+          available: "hsl(var(--seat-available))",
+          selected: "hsl(var(--seat-selected))",
+          booked: "hsl(var(--seat-booked))",
+          premium: "hsl(var(--seat-premium))",
+          vip: "hsl(var(--seat-vip))",
         },
-        message: {
-          outgoing: "hsl(var(--message-outgoing))",
-          incoming: "hsl(var(--message-incoming))",
-        },
-        online: "hsl(var(--online))",
-        offline: "hsl(var(--offline))",
-        time: "hsl(var(--time-text))",
-        unread: "hsl(var(--unread-badge))",
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",
           foreground: "hsl(var(--sidebar-foreground))",
@@ -92,14 +101,18 @@ export default {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
-        bubble: "18px",
+        xl: "1rem",
+        "2xl": "1.5rem",
+        "3xl": "2rem",
       },
       boxShadow: {
         'sm': 'var(--shadow-sm)',
         'md': 'var(--shadow-md)',
         'lg': 'var(--shadow-lg)',
         'glow': 'var(--shadow-glow)',
-        'message': '0 1px 2px hsl(0 0% 0% / 0.1)',
+        'glow-accent': 'var(--shadow-glow-accent)',
+        'card': '0 4px 20px hsl(0 0% 0% / 0.25)',
+        'ticket': '0 8px 32px hsl(0 0% 0% / 0.3)',
       },
       keyframes: {
         "accordion-down": {
@@ -140,21 +153,16 @@ export default {
         },
         "bounce-in": {
           "0%": { transform: "scale(0)", opacity: "0" },
-          "50%": { transform: "scale(1.1)" },
+          "50%": { transform: "scale(1.05)" },
           "100%": { transform: "scale(1)", opacity: "1" },
         },
         "pulse-soft": {
           "0%, 100%": { opacity: "1" },
-          "50%": { opacity: "0.6" },
+          "50%": { opacity: "0.7" },
         },
-        "typing-dot": {
-          "0%, 100%": { transform: "translateY(0)" },
-          "50%": { transform: "translateY(-4px)" },
-        },
-        "shake": {
-          "0%, 100%": { transform: "translateX(0)" },
-          "25%": { transform: "translateX(-5px)" },
-          "75%": { transform: "translateX(5px)" },
+        "shimmer": {
+          "0%": { backgroundPosition: "-200% 0" },
+          "100%": { backgroundPosition: "200% 0" },
         },
       },
       animation: {
@@ -169,17 +177,15 @@ export default {
         "scale-in": "scale-in 0.2s ease-out",
         "bounce-in": "bounce-in 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55)",
         "pulse-soft": "pulse-soft 2s ease-in-out infinite",
-        "typing-dot": "typing-dot 1s ease-in-out infinite",
-        "shake": "shake 0.5s ease-in-out",
-      },
-      transitionTimingFunction: {
-        'bounce-in': 'cubic-bezier(0.68, -0.55, 0.265, 1.55)',
+        "shimmer": "shimmer 2s infinite",
       },
       backgroundImage: {
         'gradient-primary': 'var(--gradient-primary)',
-        'gradient-secondary': 'var(--gradient-secondary)',
+        'gradient-accent': 'var(--gradient-accent)',
+        'gradient-success': 'var(--gradient-success)',
+        'gradient-hero': 'var(--gradient-hero)',
+        'gradient-card': 'var(--gradient-card)',
         'gradient-glow': 'var(--gradient-glow)',
-        'gradient-message': 'var(--gradient-message)',
       },
       spacing: {
         '18': '4.5rem',
@@ -197,6 +203,11 @@ export default {
         '80': '80',
         '90': '90',
         '100': '100',
+      },
+      aspectRatio: {
+        'poster': '2/3',
+        'banner': '21/9',
+        'ticket': '16/9',
       },
     },
   },
