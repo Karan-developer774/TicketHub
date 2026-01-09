@@ -11,6 +11,9 @@ import CheckoutPage from "./pages/CheckoutPage";
 import BookingConfirmationPage from "./pages/BookingConfirmationPage";
 import MyBookingsPage from "./pages/MyBookingsPage";
 import SearchPage from "./pages/SearchPage";
+import MoviesPage from "./pages/MoviesPage";
+import EventsPage from "./pages/EventsPage";
+import TravelPage from "./pages/TravelPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -24,6 +27,9 @@ const App = () => (
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/auth" element={<AuthPage />} />
+          <Route path="/movies" element={<MoviesPage />} />
+          <Route path="/events" element={<EventsPage />} />
+          <Route path="/travel" element={<TravelPage />} />
           <Route path="/events/:id" element={<EventDetailPage />} />
           <Route path="/booking/:scheduleId" element={<SeatSelectionPage />} />
           <Route path="/checkout" element={<CheckoutPage />} />
