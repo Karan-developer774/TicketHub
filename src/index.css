@@ -6,115 +6,120 @@
 
 @layer base {
   :root {
-    /* Chat App Dark Theme */
-    --background: 220 20% 10%;
-    --background-secondary: 220 18% 13%;
-    --background-tertiary: 220 16% 16%;
+    /* Ticket Booking App - Modern Vibrant Theme */
+    --background: 230 25% 7%;
+    --background-secondary: 230 22% 10%;
+    --background-tertiary: 230 20% 13%;
     --foreground: 210 40% 98%;
 
-    --card: 220 18% 13%;
+    --card: 230 22% 11%;
     --card-foreground: 210 40% 98%;
 
-    --popover: 220 16% 16%;
+    --popover: 230 20% 12%;
     --popover-foreground: 210 40% 98%;
 
-    /* Teal/Cyan Primary */
-    --primary: 174 72% 46%;
-    --primary-foreground: 220 20% 10%;
-    --primary-glow: 174 72% 56%;
-    --primary-muted: 174 40% 30%;
+    /* Vibrant Orange/Coral Primary */
+    --primary: 24 95% 53%;
+    --primary-foreground: 0 0% 100%;
+    --primary-glow: 24 95% 60%;
+    --primary-muted: 24 50% 35%;
 
-    --secondary: 220 16% 20%;
+    /* Electric Purple Accent */
+    --accent: 270 70% 55%;
+    --accent-foreground: 0 0% 100%;
+    --accent-glow: 270 70% 65%;
+
+    --secondary: 230 18% 16%;
     --secondary-foreground: 210 30% 90%;
 
-    --muted: 220 14% 18%;
-    --muted-foreground: 215 15% 55%;
-
-    --accent: 174 60% 40%;
-    --accent-foreground: 210 40% 98%;
+    --muted: 230 16% 18%;
+    --muted-foreground: 220 15% 55%;
 
     --destructive: 0 72% 51%;
     --destructive-foreground: 210 40% 98%;
 
-    --success: 142 72% 45%;
-    --success-foreground: 220 20% 10%;
+    --success: 152 76% 42%;
+    --success-foreground: 0 0% 100%;
 
-    --warning: 38 92% 50%;
-    --warning-foreground: 220 20% 10%;
+    --warning: 45 93% 47%;
+    --warning-foreground: 230 25% 7%;
 
-    --online: 142 72% 45%;
-    --offline: 215 15% 45%;
+    --info: 200 85% 50%;
+    --info-foreground: 0 0% 100%;
 
-    --border: 220 14% 20%;
-    --input: 220 14% 18%;
-    --ring: 174 72% 46%;
+    --border: 230 16% 18%;
+    --input: 230 16% 15%;
+    --ring: 24 95% 53%;
 
     --radius: 0.75rem;
 
-    /* Chat specific colors */
-    --message-outgoing: 174 50% 25%;
-    --message-incoming: 220 16% 18%;
-    --chat-hover: 220 14% 15%;
-    --chat-active: 174 30% 18%;
-    --typing-dot: 174 72% 46%;
-    --unread-badge: 174 72% 46%;
-    --time-text: 215 15% 50%;
+    /* Ticket specific colors */
+    --movie: 348 83% 55%;
+    --event: 270 70% 55%;
+    --travel: 200 85% 50%;
+    --seat-available: 152 76% 42%;
+    --seat-selected: 24 95% 53%;
+    --seat-booked: 230 16% 30%;
+    --seat-premium: 45 93% 47%;
+    --seat-vip: 270 70% 55%;
 
     /* Gradients */
-    --gradient-primary: linear-gradient(135deg, hsl(174, 72%, 46%), hsl(174, 72%, 36%));
-    --gradient-secondary: linear-gradient(180deg, hsl(220, 18%, 13%), hsl(220, 20%, 10%));
-    --gradient-glow: radial-gradient(circle at center, hsl(174, 72%, 46%, 0.15), transparent 70%);
-    --gradient-message: linear-gradient(135deg, hsl(174, 50%, 28%), hsl(174, 50%, 22%));
+    --gradient-primary: linear-gradient(135deg, hsl(24, 95%, 53%), hsl(340, 85%, 50%));
+    --gradient-accent: linear-gradient(135deg, hsl(270, 70%, 55%), hsl(200, 85%, 50%));
+    --gradient-success: linear-gradient(135deg, hsl(152, 76%, 42%), hsl(180, 70%, 45%));
+    --gradient-hero: linear-gradient(180deg, hsl(230, 22%, 10%) 0%, hsl(230, 25%, 7%) 100%);
+    --gradient-card: linear-gradient(145deg, hsl(230, 22%, 12%) 0%, hsl(230, 22%, 9%) 100%);
+    --gradient-glow: radial-gradient(circle at center, hsl(24, 95%, 53%, 0.15), transparent 70%);
 
     /* Shadows */
-    --shadow-sm: 0 1px 2px hsl(0 0% 0% / 0.2);
-    --shadow-md: 0 4px 12px hsl(0 0% 0% / 0.25);
-    --shadow-lg: 0 10px 30px hsl(0 0% 0% / 0.3);
-    --shadow-glow: 0 0 30px hsl(174, 72%, 46%, 0.2);
+    --shadow-sm: 0 1px 2px hsl(0 0% 0% / 0.3);
+    --shadow-md: 0 4px 16px hsl(0 0% 0% / 0.35);
+    --shadow-lg: 0 12px 40px hsl(0 0% 0% / 0.4);
+    --shadow-glow: 0 0 40px hsl(24, 95%, 53%, 0.25);
+    --shadow-glow-accent: 0 0 40px hsl(270, 70%, 55%, 0.25);
 
-    --sidebar-background: 220 18% 11%;
+    --sidebar-background: 230 22% 9%;
     --sidebar-foreground: 210 30% 90%;
-    --sidebar-primary: 174 72% 46%;
-    --sidebar-primary-foreground: 220 20% 10%;
-    --sidebar-accent: 220 14% 16%;
+    --sidebar-primary: 24 95% 53%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 230 18% 14%;
     --sidebar-accent-foreground: 210 30% 90%;
-    --sidebar-border: 220 14% 18%;
-    --sidebar-ring: 174 72% 46%;
+    --sidebar-border: 230 16% 16%;
+    --sidebar-ring: 24 95% 53%;
   }
 
   .light {
     --background: 0 0% 98%;
     --background-secondary: 0 0% 100%;
-    --background-tertiary: 210 20% 96%;
-    --foreground: 220 20% 10%;
+    --background-tertiary: 220 15% 96%;
+    --foreground: 230 25% 10%;
 
     --card: 0 0% 100%;
-    --card-foreground: 220 20% 10%;
+    --card-foreground: 230 25% 10%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 220 20% 10%;
+    --popover-foreground: 230 25% 10%;
 
-    --primary: 174 72% 40%;
+    --primary: 24 95% 50%;
     --primary-foreground: 0 0% 100%;
-    --primary-glow: 174 72% 50%;
-    --primary-muted: 174 40% 85%;
+    --primary-glow: 24 95% 55%;
+    --primary-muted: 24 70% 90%;
 
-    --secondary: 210 20% 96%;
-    --secondary-foreground: 220 20% 20%;
-
-    --muted: 210 20% 94%;
-    --muted-foreground: 215 15% 45%;
-
-    --accent: 174 60% 35%;
+    --accent: 270 70% 50%;
     --accent-foreground: 0 0% 100%;
 
-    --border: 210 20% 90%;
-    --input: 210 20% 94%;
+    --secondary: 220 15% 96%;
+    --secondary-foreground: 230 25% 20%;
 
-    --message-outgoing: 174 60% 92%;
-    --message-incoming: 210 20% 96%;
-    --chat-hover: 210 20% 95%;
-    --chat-active: 174 50% 92%;
+    --muted: 220 15% 94%;
+    --muted-foreground: 220 10% 45%;
+
+    --border: 220 15% 90%;
+    --input: 220 15% 94%;
+
+    --gradient-primary: linear-gradient(135deg, hsl(24, 95%, 50%), hsl(340, 85%, 45%));
+    --gradient-hero: linear-gradient(180deg, hsl(220, 15%, 98%) 0%, hsl(220, 15%, 96%) 100%);
+    --gradient-card: linear-gradient(145deg, hsl(0, 0%, 100%) 0%, hsl(220, 15%, 98%) 100%);
   }
 }
 
@@ -148,6 +153,7 @@
 
   .scrollbar-thin::-webkit-scrollbar {
     width: 6px;
+    height: 6px;
   }
   .scrollbar-thin::-webkit-scrollbar-track {
     background: transparent;
@@ -158,16 +164,6 @@
   }
   .scrollbar-thin::-webkit-scrollbar-thumb:hover {
     background: hsl(var(--muted-foreground));
-  }
-
-  .message-bubble-out {
-    background: linear-gradient(135deg, hsl(var(--message-outgoing)), hsl(174, 45%, 22%));
-    border-radius: 18px 18px 4px 18px;
-  }
-
-  .message-bubble-in {
-    background: hsl(var(--message-incoming));
-    border-radius: 18px 18px 18px 4px;
   }
 
   .glass {
@@ -189,32 +185,75 @@
     background-clip: text;
   }
 
+  .gradient-text-accent {
+    background: var(--gradient-accent);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
   .glow {
     box-shadow: var(--shadow-glow);
   }
 
-  .animate-in {
-    animation: fadeIn 0.3s ease-out;
+  .glow-accent {
+    box-shadow: var(--shadow-glow-accent);
   }
 
-  .slide-in-right {
-    animation: slideInRight 0.3s ease-out;
+  /* Ticket Card Styles */
+  .ticket-card {
+    background: var(--gradient-card);
+    border: 1px solid hsl(var(--border));
+    transition: all 0.3s ease;
   }
 
-  .slide-in-left {
-    animation: slideInLeft 0.3s ease-out;
+  .ticket-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+    border-color: hsl(var(--primary) / 0.3);
   }
 
-  .slide-in-up {
-    animation: slideInUp 0.2s ease-out;
+  /* Seat Styles */
+  .seat {
+    @apply w-8 h-8 rounded-md flex items-center justify-center text-xs font-medium cursor-pointer transition-all duration-200;
   }
 
-  .scale-in {
-    animation: scaleIn 0.2s ease-out;
+  .seat-available {
+    @apply bg-secondary hover:bg-primary/20 hover:border-primary border border-border;
   }
 
-  .pulse-dot {
-    animation: pulseDot 1.5s ease-in-out infinite;
+  .seat-selected {
+    @apply bg-primary text-primary-foreground border-primary;
+  }
+
+  .seat-booked {
+    @apply bg-muted text-muted-foreground cursor-not-allowed opacity-50;
+  }
+
+  .seat-premium {
+    @apply border-warning text-warning hover:bg-warning/20;
+  }
+
+  .seat-vip {
+    @apply border-accent text-accent hover:bg-accent/20;
+  }
+
+  /* Category Pills */
+  .category-movie {
+    @apply bg-pink-500/10 text-pink-400 border-pink-500/30;
+  }
+
+  .category-event {
+    @apply bg-purple-500/10 text-purple-400 border-purple-500/30;
+  }
+
+  .category-travel {
+    @apply bg-blue-500/10 text-blue-400 border-blue-500/30;
+  }
+
+  /* QR Code Container */
+  .qr-container {
+    @apply bg-white p-4 rounded-xl inline-block;
   }
 }
 
@@ -243,44 +282,48 @@
   to { transform: scale(1); opacity: 1; }
 }
 
-@keyframes pulseDot {
-  0%, 100% { opacity: 0.4; }
-  50% { opacity: 1; }
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 20px hsl(24, 95%, 53%, 0.2); }
+  50% { box-shadow: 0 0 40px hsl(24, 95%, 53%, 0.4); }
 }
 
-@keyframes bounce {
+@keyframes float {
   0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-5px); }
+  50% { transform: translateY(-10px); }
 }
 
-@keyframes typing {
-  0% { transform: translateY(0); }
-  25% { transform: translateY(-3px); }
-  50% { transform: translateY(0); }
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
 }
 
-.typing-indicator span {
-  animation: typing 1s ease-in-out infinite;
+.animate-pulse-glow {
+  animation: pulse-glow 2s ease-in-out infinite;
 }
 
-.typing-indicator span:nth-child(2) {
-  animation-delay: 0.15s;
+.animate-float {
+  animation: float 3s ease-in-out infinite;
 }
 
-.typing-indicator span:nth-child(3) {
-  animation-delay: 0.3s;
+.animate-shimmer {
+  background: linear-gradient(90deg, transparent, hsl(var(--primary) / 0.1), transparent);
+  background-size: 200% 100%;
+  animation: shimmer 2s infinite;
 }
 
-/* Custom chat background pattern */
-.chat-background {
+/* Hero Background Pattern */
+.hero-pattern {
   background-color: hsl(var(--background));
-  background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%2325d6b0' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  background-image: 
+    radial-gradient(circle at 20% 80%, hsl(24, 95%, 53%, 0.08) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, hsl(270, 70%, 55%, 0.08) 0%, transparent 50%),
+    radial-gradient(circle at 50% 50%, hsl(200, 85%, 50%, 0.05) 0%, transparent 70%);
 }
 
 /* Mobile touch optimizations */
 @media (hover: none) {
-  .hover\:bg-chat-hover:active {
-    background: hsl(var(--chat-hover));
+  .ticket-card:active {
+    transform: scale(0.98);
   }
 }
 
@@ -292,4 +335,14 @@
   .safe-area-inset-top {
     padding-top: max(0.5rem, env(safe-area-inset-top));
   }
+}
+
+/* Custom scrollbar for event list */
+.event-scroll {
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+}
+
+.event-scroll > * {
+  scroll-snap-align: start;
 }
