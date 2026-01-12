@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useSearchParams, Link, useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import { useBookingStore } from '@/store/bookingStore';
+import { Navbar } from '@/components/layout/Navbar';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { EventCard } from '@/components/events/EventCard';
@@ -9,7 +10,6 @@ import type { Event, Category } from '@/types';
 import { getCategoryIcon } from '@/lib/helpers';
 import { 
   Search, 
-  ArrowLeft, 
   Filter,
   X,
   Loader2,
@@ -98,68 +98,69 @@ export default function SearchPage() {
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Header */}
-      <header className="sticky top-0 z-50 glass-strong border-b border-border">
-        <div className="container mx-auto px-4 h-16 flex items-center gap-4">
-          <button onClick={() => navigate(-1)} className="text-muted-foreground hover:text-foreground">
-            <ArrowLeft className="h-5 w-5" />
-          </button>
-          <form onSubmit={handleSearch} className="flex-1">
-            <div className="relative">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-              <Input
-                placeholder="Search events, movies..."
-                value={localQuery}
-                onChange={(e) => setLocalQuery(e.target.value)}
-                className="pl-10 bg-secondary border-0"
-              />
-            </div>
-          </form>
-          <Sheet>
-            <SheetTrigger asChild>
-              <Button variant="outline" size="icon">
-                <Filter className="h-4 w-4" />
-              </Button>
-            </SheetTrigger>
-            <SheetContent>
-              <SheetHeader>
-                <SheetTitle>Filters</SheetTitle>
-              </SheetHeader>
-              <div className="py-6 space-y-6">
-                <div>
-                  <h3 className="font-medium mb-3">Categories</h3>
-                  <div className="space-y-2">
-                    {categories.map((category) => {
-                      const Icon = getCategoryIcon(category.icon);
-                      const isSelected = selectedCategory === category.id;
-                      return (
-                        <button
-                          key={category.id}
-                          onClick={() => setSelectedCategory(isSelected ? null : category.id)}
-                          className={`w-full flex items-center gap-3 p-3 rounded-lg transition-colors ${
-                            isSelected 
-                              ? 'bg-primary/10 text-primary' 
-                              : 'hover:bg-secondary'
-                          }`}
-                        >
-                          <Icon className="h-5 w-5" />
-                          <span>{category.name}</span>
-                        </button>
-                      );
-                    })}
-                  </div>
-                </div>
-                {(selectedCategory || searchQuery) && (
-                  <Button variant="outline" onClick={clearFilters} className="w-full">
-                    <X className="h-4 w-4 mr-2" />
-                    Clear Filters
-                  </Button>
-                )}
+      <Navbar />
+      
+      {/* Search Bar */}
+      <div className="border-b border-border">
+        <div className="container mx-auto px-4 py-4">
+          <div className="flex items-center gap-3">
+            <form onSubmit={handleSearch} className="flex-1">
+              <div className="relative">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                <Input
+                  placeholder="Search events, movies..."
+                  value={localQuery}
+                  onChange={(e) => setLocalQuery(e.target.value)}
+                  className="pl-10"
+                />
               </div>
-            </SheetContent>
-          </Sheet>
+            </form>
+            <Sheet>
+              <SheetTrigger asChild>
+                <Button variant="outline" size="icon">
+                  <Filter className="h-4 w-4" />
+                </Button>
+              </SheetTrigger>
+              <SheetContent>
+                <SheetHeader>
+                  <SheetTitle>Filters</SheetTitle>
+                </SheetHeader>
+                <div className="py-6 space-y-6">
+                  <div>
+                    <h3 className="font-medium mb-3">Categories</h3>
+                    <div className="space-y-2">
+                      {categories.map((category) => {
+                        const Icon = getCategoryIcon(category.icon);
+                        const isSelected = selectedCategory === category.id;
+                        return (
+                          <button
+                            key={category.id}
+                            onClick={() => setSelectedCategory(isSelected ? null : category.id)}
+                            className={`w-full flex items-center gap-3 p-3 rounded-lg transition-colors ${
+                              isSelected 
+                                ? 'bg-primary/10 text-primary' 
+                                : 'hover:bg-secondary'
+                            }`}
+                          >
+                            <Icon className="h-5 w-5" />
+                            <span>{category.name}</span>
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+                  {(selectedCategory || searchQuery) && (
+                    <Button variant="outline" onClick={clearFilters} className="w-full">
+                      <X className="h-4 w-4 mr-2" />
+                      Clear Filters
+                    </Button>
+                  )}
+                </div>
+              </SheetContent>
+            </Sheet>
+          </div>
         </div>
-      </header>
+      </div>
 
       {/* Active Filters */}
       {(selectedCategory || searchQuery) && (

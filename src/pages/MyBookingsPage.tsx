@@ -2,12 +2,12 @@ import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuthStore } from '@/store/authStore';
+import { Navbar } from '@/components/layout/Navbar';
 import { Button } from '@/components/ui/button';
 import { formatDate, formatTime, formatCurrency } from '@/lib/helpers';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import type { Booking, Event, EventSchedule } from '@/types';
 import { 
-  ArrowLeft, 
   Ticket,
   Calendar,
   Clock,
@@ -131,15 +131,7 @@ export default function MyBookingsPage() {
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Header */}
-      <header className="sticky top-0 z-50 glass-strong border-b border-border">
-        <div className="container mx-auto px-4 h-16 flex items-center gap-4">
-          <button onClick={() => navigate(-1)} className="text-muted-foreground hover:text-foreground">
-            <ArrowLeft className="h-5 w-5" />
-          </button>
-          <h1 className="text-lg font-semibold text-foreground">My Bookings</h1>
-        </div>
-      </header>
+      <Navbar />
 
       <div className="container mx-auto px-4 py-6">
         <Tabs defaultValue="upcoming" className="w-full">
