@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { formatDate, formatTime, formatCurrency } from '@/lib/helpers';
+import { createBookingNotification, createPaymentNotification } from '@/lib/notifications';
 import type { Offer } from '@/types';
 import { 
   ArrowLeft, 
@@ -175,6 +176,20 @@ export default function CheckoutPage() {
           available_seats: (selectedSchedule.available_seats || selectedSchedule.total_seats || 0) - selectedSeats.length 
         })
         .eq('id', selectedSchedule.id);
+
+      // Create notifications
+      await createBookingNotification(
+        user.id,
+        booking.booking_number,
+        selectedEvent.title,
+        booking.id
+      );
+      
+      await createPaymentNotification(
+        user.id,
+        getFinalAmount(),
+        selectedEvent.title
+      );
 
       toast({ title: 'Booking confirmed!', description: 'Your tickets have been booked successfully.' });
       
