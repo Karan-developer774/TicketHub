@@ -2,11 +2,11 @@ import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import { EventCard } from '@/components/events/EventCard';
+import { Navbar } from '@/components/layout/Navbar';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import type { Event, Category } from '@/types';
 import { 
-  ArrowLeft, 
   Search, 
   Music,
   Loader2,
@@ -73,29 +73,33 @@ export default function EventsPage() {
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Header */}
-      <header className="sticky top-0 z-50 glass-strong border-b border-border">
-        <div className="container mx-auto px-4 h-16 flex items-center gap-4">
-          <button onClick={() => navigate('/')} className="text-muted-foreground hover:text-foreground">
-            <ArrowLeft className="h-5 w-5" />
-          </button>
-          <div className="flex items-center gap-2">
-            <Music className="h-5 w-5 text-event" />
-            <h1 className="text-lg font-semibold text-foreground">Live Events</h1>
-          </div>
-          <div className="flex-1 max-w-md ml-auto">
-            <div className="relative">
+      <Navbar />
+      
+      {/* Page Header */}
+      <div className="bg-gradient-to-b from-secondary/50 to-background py-8">
+        <div className="container mx-auto px-4">
+          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+            <div className="flex items-center gap-3">
+              <div className="h-12 w-12 rounded-xl bg-event/20 flex items-center justify-center">
+                <Music className="h-6 w-6 text-event" />
+              </div>
+              <div>
+                <h1 className="text-2xl md:text-3xl font-display font-bold">Live Events</h1>
+                <p className="text-muted-foreground">{filteredEvents.length} events available</p>
+              </div>
+            </div>
+            <div className="relative w-full md:w-80">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
               <Input
                 placeholder="Search events..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-10 bg-secondary border-0"
+                className="pl-10"
               />
             </div>
           </div>
         </div>
-      </header>
+      </div>
 
       {/* Category Filter */}
       {categories.length > 0 && (

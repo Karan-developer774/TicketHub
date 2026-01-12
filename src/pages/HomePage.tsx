@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { useAuthStore } from '@/store/authStore';
 import { useBookingStore } from '@/store/bookingStore';
 import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
@@ -8,53 +7,26 @@ import { Input } from '@/components/ui/input';
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
 import { EventCard } from '@/components/events/EventCard';
 import { CategoryBadge } from '@/components/ui/badge-variants';
-import { NotificationDropdown } from '@/components/notifications/NotificationDropdown';
-import { getCategoryIcon, cities, formatCurrency } from '@/lib/helpers';
+import { Navbar } from '@/components/layout/Navbar';
+import { getCategoryIcon, formatCurrency } from '@/lib/helpers';
 import type { Event, Category } from '@/types';
 import { 
   Search, 
-  MapPin, 
-  Ticket, 
-  ChevronDown, 
-  User, 
   Film, 
   Music, 
   Plane,
   Star,
-  TrendingUp,
   Calendar,
-  LogOut,
-  Settings,
-  History,
-  Menu,
-  X
+  Ticket
 } from 'lucide-react';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from '@/components/ui/popover';
 
 export default function HomePage() {
   const navigate = useNavigate();
-  const { user, profile, signOut, isLoading: authLoading, initialize } = useAuthStore();
-  const { searchQuery, setSearchQuery, selectedCity, setSelectedCity, selectedCategory, setSelectedCategory } = useBookingStore();
+  const { searchQuery, setSearchQuery } = useBookingStore();
   
   const [events, setEvents] = useState<Event[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-
-  useEffect(() => {
-    initialize();
-  }, [initialize]);
 
   useEffect(() => {
     fetchData();
@@ -101,170 +73,9 @@ export default function HomePage() {
     navigate(`/search?q=${encodeURIComponent(searchQuery)}`);
   };
 
-  const handleSignOut = async () => {
-    await signOut();
-    navigate('/');
-  };
-
   return (
     <div className="min-h-screen bg-background">
-      {/* Header */}
-      <header className="sticky top-0 z-50 glass-strong border-b border-border">
-        <div className="container mx-auto px-4">
-          <div className="flex items-center justify-between h-16">
-            {/* Logo */}
-            <Link to="/" className="flex items-center gap-2">
-              <div className="h-9 w-9 rounded-lg bg-gradient-primary flex items-center justify-center">
-                <Ticket className="h-5 w-5 text-primary-foreground" />
-              </div>
-              <span className="text-xl font-display font-bold gradient-text hidden sm:block">
-                TicketHub
-              </span>
-            </Link>
-
-            {/* Desktop Navigation */}
-            <nav className="hidden md:flex items-center gap-6">
-              <Link to="/movies" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1.5">
-                <Film className="h-4 w-4" />
-                Movies
-              </Link>
-              <Link to="/events" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1.5">
-                <Music className="h-4 w-4" />
-                Events
-              </Link>
-              <Link to="/travel" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1.5">
-                <Plane className="h-4 w-4" />
-                Travel
-              </Link>
-            </nav>
-
-            {/* City Selector & Actions */}
-            <div className="flex items-center gap-3">
-              {/* City Selector */}
-              <Popover>
-                <PopoverTrigger asChild>
-                  <Button variant="ghost" size="sm" className="text-muted-foreground hover:text-foreground">
-                    <MapPin className="h-4 w-4 mr-1" />
-                    <span className="hidden sm:inline">{selectedCity}</span>
-                    <ChevronDown className="h-3 w-3 ml-1" />
-                  </Button>
-                </PopoverTrigger>
-                <PopoverContent className="w-48 p-2">
-                  <div className="space-y-1">
-                    {cities.map((city) => (
-                      <button
-                        key={city}
-                        onClick={() => setSelectedCity(city)}
-                        className={`w-full text-left px-3 py-2 rounded-md text-sm transition-colors ${
-                          selectedCity === city 
-                            ? 'bg-primary/10 text-primary' 
-                            : 'hover:bg-secondary'
-                        }`}
-                      >
-                        {city}
-                      </button>
-                    ))}
-                  </div>
-                </PopoverContent>
-              </Popover>
-
-              {/* User Actions */}
-              {user ? (
-                <>
-                  <NotificationDropdown />
-                  <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                      <Button variant="ghost" size="icon" className="rounded-full">
-                        <div className="h-8 w-8 rounded-full bg-gradient-primary flex items-center justify-center">
-                          <span className="text-sm font-medium text-primary-foreground">
-                            {profile?.full_name?.charAt(0) || user.email?.charAt(0)?.toUpperCase()}
-                          </span>
-                        </div>
-                      </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end" className="w-56">
-                      <div className="px-3 py-2">
-                        <p className="font-medium text-foreground">{profile?.full_name || 'User'}</p>
-                        <p className="text-sm text-muted-foreground truncate">{user.email}</p>
-                      </div>
-                      <DropdownMenuSeparator />
-                      <DropdownMenuItem asChild>
-                        <Link to="/bookings" className="flex items-center gap-2">
-                          <History className="h-4 w-4" />
-                          My Bookings
-                        </Link>
-                      </DropdownMenuItem>
-                      <DropdownMenuItem asChild>
-                        <Link to="/profile" className="flex items-center gap-2">
-                          <User className="h-4 w-4" />
-                          Profile
-                        </Link>
-                      </DropdownMenuItem>
-                      <DropdownMenuItem asChild>
-                        <Link to="/settings" className="flex items-center gap-2">
-                          <Settings className="h-4 w-4" />
-                          Settings
-                        </Link>
-                      </DropdownMenuItem>
-                      <DropdownMenuSeparator />
-                      <DropdownMenuItem onClick={handleSignOut} className="text-destructive">
-                        <LogOut className="h-4 w-4 mr-2" />
-                        Sign Out
-                      </DropdownMenuItem>
-                    </DropdownMenuContent>
-                  </DropdownMenu>
-                </>
-              ) : (
-                <Button asChild size="sm" className="bg-gradient-primary hover:opacity-90">
-                  <Link to="/auth">Sign In</Link>
-                </Button>
-              )}
-
-              {/* Mobile Menu Button */}
-              <Button 
-                variant="ghost" 
-                size="icon" 
-                className="md:hidden"
-                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              >
-                {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-              </Button>
-            </div>
-          </div>
-
-          {/* Mobile Menu */}
-          {mobileMenuOpen && (
-            <nav className="md:hidden py-4 border-t border-border animate-slide-in-down">
-              <div className="flex flex-col gap-2">
-                <Link 
-                  to="/movies" 
-                  className="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-secondary transition-colors"
-                  onClick={() => setMobileMenuOpen(false)}
-                >
-                  <Film className="h-5 w-5 text-movie" />
-                  <span>Movies</span>
-                </Link>
-                <Link 
-                  to="/events" 
-                  className="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-secondary transition-colors"
-                  onClick={() => setMobileMenuOpen(false)}
-                >
-                  <Music className="h-5 w-5 text-event" />
-                  <span>Events</span>
-                </Link>
-                <Link 
-                  to="/travel" 
-                  className="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-secondary transition-colors"
-                  onClick={() => setMobileMenuOpen(false)}
-                >
-                  <Plane className="h-5 w-5 text-travel" />
-                  <span>Travel</span>
-                </Link>
-              </div>
-            </nav>
-          )}
-        </div>
-      </header>
+      <Navbar />
 
       {/* Hero Section */}
       <section className="hero-pattern py-12 md:py-20">

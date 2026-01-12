@@ -14,6 +14,7 @@ import SearchPage from "./pages/SearchPage";
 import MoviesPage from "./pages/MoviesPage";
 import EventsPage from "./pages/EventsPage";
 import TravelPage from "./pages/TravelPage";
+import CategoryPage from "./pages/CategoryPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -28,9 +29,12 @@ const App = () => (
           <Route path="/" element={<HomePage />} />
           <Route path="/auth" element={<AuthPage />} />
           <Route path="/movies" element={<MoviesPage />} />
+          <Route path="/movies/:slug" element={<CategoryPage />} />
           <Route path="/events" element={<EventsPage />} />
+          <Route path="/events/:slug" element={<CategoryPage />} />
           <Route path="/travel" element={<TravelPage />} />
-          <Route path="/events/:id" element={<EventDetailPage />} />
+          <Route path="/event/:id" element={<EventDetailPage />} />
+          <Route path="/events/detail/:id" element={<EventDetailPage />} />
           <Route path="/booking/:scheduleId" element={<SeatSelectionPage />} />
           <Route path="/checkout" element={<CheckoutPage />} />
           <Route path="/bookings/:bookingId" element={<BookingConfirmationPage />} />

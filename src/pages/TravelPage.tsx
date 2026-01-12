@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuthStore } from '@/store/authStore';
+import { Navbar } from '@/components/layout/Navbar';
 import { Button } from '@/components/ui/button';
 import { 
   TravelSearchForm, 
@@ -228,23 +229,27 @@ export default function TravelPage() {
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Header */}
-      <header className="sticky top-0 z-50 glass-strong border-b border-border">
-        <div className="container mx-auto px-4 h-16 flex items-center gap-4">
-          <button 
-            onClick={() => view === 'search' ? navigate('/') : handleBack()} 
-            className="text-muted-foreground hover:text-foreground"
-          >
-            <ArrowLeft className="h-5 w-5" />
-          </button>
-          <div className="flex items-center gap-2">
-            <Plane className="h-5 w-5 text-travel" />
-            <h1 className="text-lg font-semibold text-foreground">
-              {view === 'search' ? 'Book Travel' : `${searchParams?.source} → ${searchParams?.destination}`}
-            </h1>
+      {view === 'search' && <Navbar />}
+      
+      {/* Internal Header for results */}
+      {view === 'results' && (
+        <header className="sticky top-0 z-50 glass-strong border-b border-border">
+          <div className="container mx-auto px-4 h-16 flex items-center gap-4">
+            <button 
+              onClick={handleBack} 
+              className="text-muted-foreground hover:text-foreground"
+            >
+              <ArrowLeft className="h-5 w-5" />
+            </button>
+            <div className="flex items-center gap-2">
+              <Plane className="h-5 w-5 text-travel" />
+              <h1 className="text-lg font-semibold text-foreground">
+                {searchParams?.source} → {searchParams?.destination}
+              </h1>
+            </div>
           </div>
-        </div>
-      </header>
+        </header>
+      )}
 
       {/* Search View */}
       {view === 'search' && (
