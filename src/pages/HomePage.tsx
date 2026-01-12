@@ -8,6 +8,7 @@ import { Input } from '@/components/ui/input';
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
 import { EventCard } from '@/components/events/EventCard';
 import { CategoryBadge } from '@/components/ui/badge-variants';
+import { NotificationDropdown } from '@/components/notifications/NotificationDropdown';
 import { getCategoryIcon, cities, formatCurrency } from '@/lib/helpers';
 import type { Event, Category } from '@/types';
 import { 
@@ -15,7 +16,6 @@ import {
   MapPin, 
   Ticket, 
   ChevronDown, 
-  Bell, 
   User, 
   Film, 
   Music, 
@@ -171,10 +171,7 @@ export default function HomePage() {
               {/* User Actions */}
               {user ? (
                 <>
-                  <Button variant="ghost" size="icon" className="relative">
-                    <Bell className="h-5 w-5 text-muted-foreground" />
-                    <span className="absolute top-1 right-1 h-2 w-2 rounded-full bg-primary" />
-                  </Button>
+                  <NotificationDropdown />
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
                       <Button variant="ghost" size="icon" className="rounded-full">
