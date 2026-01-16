@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuthStore } from '@/store/authStore';
 import { Navbar } from '@/components/layout/Navbar';
@@ -130,20 +130,24 @@ function generateMockResults(params: SearchParams): TravelResult[] {
 
 export default function TravelPage() {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const { user } = useAuthStore();
   const [view, setView] = useState<ViewState>('search');
   const [isLoading, setIsLoading] = useState(false);
-  const [searchParams, setSearchParams] = useState<SearchParams | null>(null);
+  const [travelSearchParams, setTravelSearchParams] = useState<SearchParams | null>(null);
   const [results, setResults] = useState<TravelResult[]>([]);
   const [selectedResult, setSelectedResult] = useState<TravelResult | null>(null);
   const [selectedSeats, setSelectedSeats] = useState<any[]>([]);
   const [totalAmount, setTotalAmount] = useState(0);
   const [sortBy, setSortBy] = useState<'price' | 'departure' | 'duration' | 'rating'>('price');
   const [filterPrice, setFilterPrice] = useState<[number, number] | null>(null);
+  
+  // Get initial travel mode from URL params
+  const initialMode = (searchParams.get('mode') as TravelMode) || 'bus';
 
   const handleSearch = async (params: SearchParams) => {
     setIsLoading(true);
-    setSearchParams(params);
+    setTravelSearchParams(params);
     
     // Simulate API delay
     await new Promise(resolve => setTimeout(resolve, 1500));
@@ -203,11 +207,11 @@ export default function TravelPage() {
     : sortedResults;
 
   // Render seat selection
-  if (view === 'seats' && selectedResult && searchParams) {
+  if (view === 'seats' && selectedResult && travelSearchParams) {
     return (
       <TravelSeatSelection
         result={selectedResult}
-        travelDate={searchParams.date}
+        travelDate={travelSearchParams.date}
         onBack={handleBack}
         onProceed={handleProceedToCheckout}
       />
@@ -215,13 +219,13 @@ export default function TravelPage() {
   }
 
   // Render checkout
-  if (view === 'checkout' && selectedResult && searchParams) {
+  if (view === 'checkout' && selectedResult && travelSearchParams) {
     return (
       <TravelCheckout
         result={selectedResult}
         selectedSeats={selectedSeats}
         totalAmount={totalAmount}
-        travelDate={searchParams.date}
+        travelDate={travelSearchParams.date}
         onBack={handleBack}
       />
     );
@@ -244,7 +248,7 @@ export default function TravelPage() {
             <div className="flex items-center gap-2">
               <Plane className="h-5 w-5 text-travel" />
               <h1 className="text-lg font-semibold text-foreground">
-                {searchParams?.source} → {searchParams?.destination}
+                {travelSearchParams?.source} → {travelSearchParams?.destination}
               </h1>
             </div>
           </div>
@@ -265,7 +269,7 @@ export default function TravelPage() {
           </div>
 
           {/* Search Form */}
-          <TravelSearchForm onSearch={handleSearch} isLoading={isLoading} />
+          <TravelSearchForm onSearch={handleSearch} isLoading={isLoading} initialMode={initialMode} />
 
           {/* Popular Destinations */}
           <div className="mt-12">
