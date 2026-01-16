@@ -20,33 +20,54 @@ const categoryMapping: Record<string, { name: string; type: string; icon: any }>
 };
 
 export default function CategoryPage() {
-  const { type, slug } = useParams<{ type: string; slug: string }>();
+  const { type, slug, id } = useParams<{ type: string; slug: string; id: string }>();
   const navigate = useNavigate();
   const [events, setEvents] = useState<Event[]>([]);
+  const [categoryData, setCategoryData] = useState<Category | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
 
   const categoryInfo = slug ? categoryMapping[slug] : null;
 
   useEffect(() => {
-    if (categoryInfo) {
+    if (categoryInfo || id) {
       fetchEvents();
     }
-  }, [slug, categoryInfo]);
+  }, [slug, id, categoryInfo]);
 
   const fetchEvents = async () => {
-    if (!categoryInfo) return;
-    
     setIsLoading(true);
     
-    // First get the category ID
-    const { data: categoryData } = await supabase
-      .from('categories')
-      .select('id')
-      .eq('name', categoryInfo.name)
-      .single();
+    let categoryId = id;
+    
+    if (categoryInfo && !id) {
+      // First get the category ID by name
+      const { data: catData } = await supabase
+        .from('categories')
+        .select('*')
+        .eq('name', categoryInfo.name)
+        .single();
 
-    if (!categoryData) {
+      if (!catData) {
+        setIsLoading(false);
+        return;
+      }
+      categoryId = catData.id;
+      setCategoryData(catData as Category);
+    } else if (id) {
+      // Get category by ID
+      const { data: catData } = await supabase
+        .from('categories')
+        .select('*')
+        .eq('id', id)
+        .single();
+
+      if (catData) {
+        setCategoryData(catData as Category);
+      }
+    }
+
+    if (!categoryId) {
       setIsLoading(false);
       return;
     }
@@ -60,7 +81,7 @@ export default function CategoryPage() {
         venue:venues(*)
       `)
       .eq('is_active', true)
-      .eq('category_id', categoryData.id);
+      .eq('category_id', categoryId);
 
     if (eventsData) {
       setEvents(eventsData as Event[]);
@@ -76,7 +97,14 @@ export default function CategoryPage() {
   const featuredEvents = filteredEvents.filter(e => e.is_featured);
   const regularEvents = filteredEvents.filter(e => !e.is_featured);
 
-  if (!categoryInfo) {
+  // Use categoryData from DB if available, otherwise fall back to categoryInfo
+  const displayInfo = categoryData ? {
+    name: categoryData.name,
+    type: categoryData.type,
+    icon: categoryMapping[slug || '']?.icon || Film
+  } : categoryInfo;
+
+  if (!displayInfo && !id) {
     return (
       <div className="min-h-screen bg-background">
         <Navbar />
@@ -88,7 +116,23 @@ export default function CategoryPage() {
     );
   }
 
-  const Icon = categoryInfo.icon;
+  // Get icon based on category type or name
+  const getIcon = () => {
+    if (categoryData) {
+      const iconMap: Record<string, any> = {
+        'Film': Film,
+        'Clapperboard': Film,
+        'Video': Film,
+        'Music': Music,
+        'Laugh': Laugh,
+        'Trophy': Trophy,
+      };
+      return iconMap[categoryData.icon || ''] || Film;
+    }
+    return displayInfo?.icon || Film;
+  };
+
+  const Icon = getIcon();
 
   return (
     <div className="min-h-screen bg-background">
@@ -108,14 +152,14 @@ export default function CategoryPage() {
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
             <div className="flex items-center gap-3">
               <div className={`h-12 w-12 rounded-xl flex items-center justify-center ${
-                categoryInfo.type === 'movie' ? 'bg-movie/20 text-movie' : 'bg-event/20 text-event'
+                displayInfo?.type === 'movie' ? 'bg-movie/20 text-movie' : 'bg-event/20 text-event'
               }`}>
                 <Icon className="h-6 w-6" />
               </div>
               <div>
-                <h1 className="text-2xl md:text-3xl font-display font-bold">{categoryInfo.name}</h1>
+                <h1 className="text-2xl md:text-3xl font-display font-bold">{displayInfo?.name || categoryData?.name}</h1>
                 <p className="text-muted-foreground">
-                  {filteredEvents.length} {categoryInfo.type === 'movie' ? 'movies' : 'events'} available
+                  {filteredEvents.length} {displayInfo?.type === 'movie' ? 'movies' : 'events'} available
                 </p>
               </div>
             </div>
@@ -123,7 +167,7 @@ export default function CategoryPage() {
             <div className="relative w-full md:w-80">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
               <Input
-                placeholder={`Search ${categoryInfo.name.toLowerCase()}...`}
+                placeholder={`Search ${(displayInfo?.name || categoryData?.name || 'items').toLowerCase()}...`}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="pl-10"
@@ -150,7 +194,7 @@ export default function CategoryPage() {
             <div className="h-20 w-20 rounded-full bg-secondary mx-auto flex items-center justify-center mb-4">
               <Icon className="h-10 w-10 text-muted-foreground" />
             </div>
-            <h2 className="text-xl font-bold mb-2">No {categoryInfo.name} Found</h2>
+            <h2 className="text-xl font-bold mb-2">No {displayInfo?.name || categoryData?.name} Found</h2>
             <p className="text-muted-foreground mb-4">
               {searchQuery 
                 ? 'Try adjusting your search query' 
@@ -187,7 +231,7 @@ export default function CategoryPage() {
             {/* All Events Grid */}
             <section>
               <h2 className="text-xl font-display font-bold mb-4">
-                {featuredEvents.length > 0 ? `All ${categoryInfo.name}` : categoryInfo.name}
+                {featuredEvents.length > 0 ? `All ${displayInfo?.name || categoryData?.name}` : (displayInfo?.name || categoryData?.name)}
               </h2>
               <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
                 {regularEvents.map((event) => (
@@ -195,7 +239,7 @@ export default function CategoryPage() {
                 ))}
                 {featuredEvents.length > 0 && regularEvents.length === 0 && (
                   <p className="col-span-full text-center text-muted-foreground py-8">
-                    All {categoryInfo.name.toLowerCase()} are featured above
+                    All {(displayInfo?.name || categoryData?.name || '').toLowerCase()} are featured above
                   </p>
                 )}
               </div>
