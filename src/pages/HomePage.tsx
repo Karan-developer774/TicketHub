@@ -17,7 +17,9 @@ import {
   Plane,
   Star,
   Calendar,
-  Ticket
+  Ticket,
+  Train,
+  Bus
 } from 'lucide-react';
 
 export default function HomePage() {
@@ -124,6 +126,47 @@ export default function HomePage() {
                 </Link>
               );
             })}
+          </div>
+
+          {/* Travel Quick Booking */}
+          <div className="max-w-4xl mx-auto mt-10">
+            <h3 className="text-center text-lg font-semibold mb-4 text-foreground">
+              Book Travel Tickets
+            </h3>
+            <div className="grid grid-cols-3 gap-4">
+              <button
+                onClick={() => navigate('/travel?mode=train')}
+                className="group relative flex flex-col items-center gap-3 p-6 rounded-2xl bg-secondary/80 border border-border hover:border-primary/50 hover:bg-secondary transition-all duration-300 hover:shadow-lg hover:shadow-primary/10"
+              >
+                <div className="h-14 w-14 rounded-full bg-gradient-to-br from-orange-500 to-orange-600 flex items-center justify-center group-hover:scale-110 transition-transform">
+                  <Train className="h-7 w-7 text-white" />
+                </div>
+                <span className="font-semibold text-foreground">Train</span>
+                <span className="text-xs text-muted-foreground">Book train tickets</span>
+              </button>
+
+              <button
+                onClick={() => navigate('/travel?mode=bus')}
+                className="group relative flex flex-col items-center gap-3 p-6 rounded-2xl bg-secondary/80 border border-border hover:border-primary/50 hover:bg-secondary transition-all duration-300 hover:shadow-lg hover:shadow-primary/10"
+              >
+                <div className="h-14 w-14 rounded-full bg-gradient-to-br from-green-500 to-green-600 flex items-center justify-center group-hover:scale-110 transition-transform">
+                  <Bus className="h-7 w-7 text-white" />
+                </div>
+                <span className="font-semibold text-foreground">Bus</span>
+                <span className="text-xs text-muted-foreground">Book bus tickets</span>
+              </button>
+
+              <button
+                onClick={() => navigate('/travel?mode=flight')}
+                className="group relative flex flex-col items-center gap-3 p-6 rounded-2xl bg-secondary/80 border border-border hover:border-primary/50 hover:bg-secondary transition-all duration-300 hover:shadow-lg hover:shadow-primary/10"
+              >
+                <div className="h-14 w-14 rounded-full bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center group-hover:scale-110 transition-transform">
+                  <Plane className="h-7 w-7 text-white" />
+                </div>
+                <span className="font-semibold text-foreground">Flight</span>
+                <span className="text-xs text-muted-foreground">Book flight tickets</span>
+              </button>
+            </div>
           </div>
         </div>
       </section>

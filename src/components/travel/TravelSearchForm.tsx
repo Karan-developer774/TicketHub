@@ -26,6 +26,7 @@ interface TravelSearchFormProps {
     mode: TravelMode;
   }) => void;
   isLoading?: boolean;
+  initialMode?: TravelMode;
 }
 
 const popularCities = [
@@ -33,12 +34,12 @@ const popularCities = [
   'Hyderabad', 'Pune', 'Ahmedabad', 'Jaipur', 'Goa'
 ];
 
-export function TravelSearchForm({ onSearch, isLoading }: TravelSearchFormProps) {
+export function TravelSearchForm({ onSearch, isLoading, initialMode = 'bus' }: TravelSearchFormProps) {
   const [source, setSource] = useState('');
   const [destination, setDestination] = useState('');
   const [date, setDate] = useState<Date | undefined>(undefined);
   const [passengers, setPassengers] = useState(1);
-  const [travelMode, setTravelMode] = useState<TravelMode>('bus');
+  const [travelMode, setTravelMode] = useState<TravelMode>(initialMode);
   const [showSourceSuggestions, setShowSourceSuggestions] = useState(false);
   const [showDestSuggestions, setShowDestSuggestions] = useState(false);
 
