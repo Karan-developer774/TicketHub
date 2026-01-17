@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuthStore } from '@/store/authStore';
 import { useBookingStore } from '@/store/bookingStore';
+import { useTheme } from '@/hooks/useTheme';
 import { Button } from '@/components/ui/button';
 import { NotificationDropdown } from '@/components/notifications/NotificationDropdown';
 import { cities } from '@/lib/helpers';
@@ -19,7 +20,9 @@ import {
   Menu,
   X,
   Laugh,
-  Trophy
+  Trophy,
+  Moon,
+  Sun
 } from 'lucide-react';
 import {
   DropdownMenu,
@@ -60,6 +63,7 @@ export function Navbar() {
   const location = useLocation();
   const { user, profile, signOut, initialize } = useAuthStore();
   const { selectedCity, setSelectedCity } = useBookingStore();
+  const { isDark, toggleTheme } = useTheme();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   useEffect(() => {
@@ -225,6 +229,20 @@ export function Navbar() {
                 </div>
               </PopoverContent>
             </Popover>
+
+            {/* Theme Toggle */}
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={toggleTheme}
+              className="text-muted-foreground hover:text-foreground"
+            >
+              {isDark ? (
+                <Sun className="h-5 w-5" />
+              ) : (
+                <Moon className="h-5 w-5" />
+              )}
+            </Button>
 
             {/* User Actions */}
             {user ? (

@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuthStore } from '@/store/authStore';
+import { useTheme } from '@/hooks/useTheme';
 import { Navbar } from '@/components/layout/Navbar';
 import { Button } from '@/components/ui/button';
 import { Switch } from '@/components/ui/switch';
@@ -33,13 +34,13 @@ import {
 export default function SettingsPage() {
   const navigate = useNavigate();
   const { user, signOut, initialize } = useAuthStore();
+  const { isDark, toggleTheme } = useTheme();
   const { toast } = useToast();
   
   const [isLoading, setIsLoading] = useState(true);
   const [settings, setSettings] = useState({
     notifications: true,
     emailNotifications: true,
-    darkMode: true,
     language: 'English'
   });
 
@@ -137,7 +138,7 @@ export default function SettingsPage() {
           <div className="bg-card border border-border rounded-xl divide-y divide-border">
             <div className="flex items-center justify-between p-4">
               <div className="flex items-center gap-3">
-                {settings.darkMode ? (
+                {isDark ? (
                   <Moon className="h-5 w-5 text-muted-foreground" />
                 ) : (
                   <Sun className="h-5 w-5 text-muted-foreground" />
@@ -149,8 +150,14 @@ export default function SettingsPage() {
               </div>
               <Switch
                 id="darkMode"
-                checked={settings.darkMode}
-                onCheckedChange={() => handleToggle('darkMode')}
+                checked={isDark}
+                onCheckedChange={() => {
+                  toggleTheme();
+                  toast({
+                    title: 'Theme Updated',
+                    description: `Switched to ${isDark ? 'light' : 'dark'} mode.`,
+                  });
+                }}
               />
             </div>
             <button className="flex items-center justify-between p-4 w-full hover:bg-muted/50 transition-colors">
