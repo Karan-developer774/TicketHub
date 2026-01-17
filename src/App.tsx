@@ -10,6 +10,8 @@ import SeatSelectionPage from "./pages/SeatSelectionPage";
 import CheckoutPage from "./pages/CheckoutPage";
 import BookingConfirmationPage from "./pages/BookingConfirmationPage";
 import MyBookingsPage from "./pages/MyBookingsPage";
+import ProfilePage from "./pages/ProfilePage";
+import SettingsPage from "./pages/SettingsPage";
 import SearchPage from "./pages/SearchPage";
 import MoviesPage from "./pages/MoviesPage";
 import EventsPage from "./pages/EventsPage";
@@ -40,6 +42,8 @@ const App = () => (
           <Route path="/checkout" element={<CheckoutPage />} />
           <Route path="/bookings/:bookingId" element={<BookingConfirmationPage />} />
           <Route path="/bookings" element={<MyBookingsPage />} />
+          <Route path="/profile" element={<ProfilePage />} />
+          <Route path="/settings" element={<SettingsPage />} />
           <Route path="/search" element={<SearchPage />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
