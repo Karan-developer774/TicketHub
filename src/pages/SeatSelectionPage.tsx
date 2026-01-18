@@ -47,8 +47,12 @@ export default function SeatSelectionPage() {
       navigate('/auth', { state: { from: { pathname: `/booking/${scheduleId}` } } });
       return;
     }
+
     fetchData();
-    return () => clearSeats();
+    // NOTE: don't clear seats on unmount; user needs them on /checkout
+    // Seats are cleared when:
+    // - a new schedule is selected (store resets selectedSeats)
+    // - booking completes (resetBooking)
   }, [scheduleId, user]);
 
   const fetchData = async () => {
