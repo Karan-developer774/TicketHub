@@ -20,7 +20,13 @@ interface AuthState {
   isLoading: boolean;
   isAdmin: boolean;
   error: string | null;
-  
+
+  /**
+   * Prevents re-registering auth listeners from multiple pages/components.
+   * (React 18 StrictMode + multiple calls can otherwise cause UI flicker.)
+   */
+  hasInitialized: boolean;
+
   initialize: () => Promise<void>;
   signIn: (email: string, password: string) => Promise<{ error: Error | null }>;
   signUp: (email: string, password: string, fullName: string) => Promise<{ error: Error | null }>;
@@ -39,31 +45,34 @@ export const useAuthStore = create<AuthState>((set, get) => ({
   isLoading: true,
   isAdmin: false,
   error: null,
+  hasInitialized: false,
 
   initialize: async (): Promise<void> => {
+    // Make initialize idempotent (avoid multiple auth listeners + flicker)
+    if (get().hasInitialized) return;
+    set({ hasInitialized: true });
+
     // Set up auth state listener first
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      (event, session) => {
-        set({ session, user: session?.user ?? null });
-        
-        // Defer profile and role fetching
-        if (session?.user) {
-          setTimeout(() => {
-            get().fetchProfile(session.user.id);
-            get().fetchRole(session.user.id);
-          }, 0);
-        } else {
-          set({ profile: null, role: null, isAdmin: false });
-        }
+    supabase.auth.onAuthStateChange((_event, session) => {
+      set({ session, user: session?.user ?? null });
+
+      // Defer profile and role fetching
+      if (session?.user) {
+        setTimeout(() => {
+          get().fetchProfile(session.user.id);
+          get().fetchRole(session.user.id);
+        }, 0);
+      } else {
+        set({ profile: null, role: null, isAdmin: false });
       }
-    );
+    });
 
     // Then check for existing session
     const { data: { session } } = await supabase.auth.getSession();
-    set({ 
-      session, 
+    set({
+      session,
       user: session?.user ?? null,
-      isLoading: false 
+      isLoading: false,
     });
 
     if (session?.user) {
@@ -140,4 +149,4 @@ export const useAuthStore = create<AuthState>((set, get) => ({
   },
 
   clearError: () => set({ error: null }),
-}));
+} as AuthState));
