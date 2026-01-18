@@ -17,7 +17,7 @@ export function EventCard({ event, variant = 'default', className }: EventCardPr
   if (variant === 'featured') {
     return (
       <Link
-        to={`/events/${event.id}`}
+        to={`/event/${event.id}`}
         className={cn(
           'group relative block aspect-[21/9] overflow-hidden rounded-2xl',
           className
@@ -51,7 +51,7 @@ export function EventCard({ event, variant = 'default', className }: EventCardPr
   if (variant === 'compact') {
     return (
       <Link
-        to={`/events/${event.id}`}
+        to={`/event/${event.id}`}
         className={cn(
           'group flex gap-3 rounded-lg p-2 transition-colors hover:bg-secondary',
           className
@@ -76,7 +76,7 @@ export function EventCard({ event, variant = 'default', className }: EventCardPr
 
   return (
     <Link
-      to={`/events/${event.id}`}
+      to={`/event/${event.id}`}
       className={cn(
         'group block overflow-hidden rounded-xl ticket-card',
         className

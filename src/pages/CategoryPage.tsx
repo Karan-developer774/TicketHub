@@ -46,7 +46,7 @@ export default function CategoryPage() {
         .from('categories')
         .select('*')
         .eq('name', categoryInfo.name)
-        .single();
+        .maybeSingle();
 
       if (!catData) {
         setIsLoading(false);
@@ -60,7 +60,7 @@ export default function CategoryPage() {
         .from('categories')
         .select('*')
         .eq('id', id)
-        .single();
+        .maybeSingle();
 
       if (catData) {
         setCategoryData(catData as Category);
