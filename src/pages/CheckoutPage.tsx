@@ -30,7 +30,7 @@ const paymentMethods = [
   { id: 'netbanking', name: 'Net Banking', icon: Building, description: 'All major banks' },
 ];
 
-export default function CheckoutPage() {
+export default function CheckoutPage(): JSX.Element | null {
   const navigate = useNavigate();
   const { user, profile } = useAuthStore();
   const { toast } = useToast();
