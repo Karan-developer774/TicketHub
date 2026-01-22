@@ -143,7 +143,7 @@ export default function CheckoutPage() {
           discount_amount: discountAmount,
           final_amount: getFinalAmount(),
           payment_method: selectedPayment,
-          payment_status: 'completed',
+          payment_status: 'paid',
           status: 'confirmed',
           booking_number: `TKT${Date.now()}`
         }])
