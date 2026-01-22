@@ -5,9 +5,9 @@ import { useAuthStore } from '@/store/authStore';
 import { useBookingStore } from '@/store/bookingStore';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 import { formatDate, formatTime, formatCurrency } from '@/lib/helpers';
 import { createBookingNotification, createPaymentNotification } from '@/lib/notifications';
+import { PaymentModal } from '@/components/checkout/PaymentModal';
 import type { Offer } from '@/types';
 import { 
   ArrowLeft, 
@@ -52,6 +52,7 @@ export default function CheckoutPage() {
   const [selectedPayment, setSelectedPayment] = useState('upi');
   const [isProcessing, setIsProcessing] = useState(false);
   const [isValidatingOffer, setIsValidatingOffer] = useState(false);
+  const [showPaymentModal, setShowPaymentModal] = useState(false);
 
   useEffect(() => {
     if (!user || !selectedSchedule || selectedSeats.length === 0) {
@@ -126,9 +127,14 @@ export default function CheckoutPage() {
     setOfferCode('');
   };
 
-  const handlePayment = async () => {
+  const handleOpenPayment = () => {
+    setShowPaymentModal(true);
+  };
+
+  const handlePaymentSuccess = async () => {
     if (!selectedSchedule || !selectedEvent || !user) return;
     
+    setShowPaymentModal(false);
     setIsProcessing(true);
     
     try {
@@ -390,14 +396,14 @@ export default function CheckoutPage() {
               </div>
 
               <Button 
-                onClick={handlePayment} 
+                onClick={handleOpenPayment} 
                 disabled={isProcessing}
                 className="w-full mt-6 bg-gradient-primary hover:opacity-90"
               >
                 {isProcessing ? (
                   <>
                     <Loader2 className="h-4 w-4 animate-spin mr-2" />
-                    Processing...
+                    Confirming Booking...
                   </>
                 ) : (
                   `Pay ${formatCurrency(getFinalAmount())}`
@@ -412,6 +418,15 @@ export default function CheckoutPage() {
           </div>
         </div>
       </div>
+
+      {/* Payment Modal */}
+      <PaymentModal
+        isOpen={showPaymentModal}
+        onClose={() => setShowPaymentModal(false)}
+        onSuccess={handlePaymentSuccess}
+        amount={getFinalAmount()}
+        paymentMethod={selectedPayment}
+      />
     </div>
   );
 }
