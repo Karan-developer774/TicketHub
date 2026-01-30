@@ -14,7 +14,8 @@ import {
   MapPin,
   ChevronRight,
   Loader2,
-  TicketX
+  TicketX,
+  RotateCcw
 } from 'lucide-react';
 
 interface BookingWithDetails extends Booking {
@@ -64,69 +65,83 @@ export default function MyBookingsPage() {
   const upcomingBookings = bookings.filter(b => new Date(b.schedule.start_time) > now && b.status !== 'cancelled');
   const pastBookings = bookings.filter(b => new Date(b.schedule.start_time) <= now || b.status === 'cancelled');
 
+  const handleRebook = (e: React.MouseEvent, eventId: string) => {
+    e.preventDefault();
+    e.stopPropagation();
+    navigate(`/events/${eventId}`);
+  };
+
   const BookingCard = ({ booking, isExpired = false }: { booking: BookingWithDetails; isExpired?: boolean }) => {
     return (
-      <Link
-        to={`/bookings/${booking.id}`}
-        className={`block bg-card border border-border rounded-xl p-4 transition-colors relative overflow-hidden ${
-          isExpired 
-            ? 'opacity-60 grayscale' 
-            : 'hover:border-primary/50'
-        }`}
-      >
+      <div className="relative">
+        <Link
+          to={`/bookings/${booking.id}`}
+          className={`block bg-card border border-border rounded-xl p-4 transition-colors overflow-hidden ${
+            isExpired 
+              ? 'opacity-70 grayscale-[50%]' 
+              : 'hover:border-primary/50'
+          }`}
+        >
+          <div className="flex gap-4">
+            <img
+              src={booking.event.image_url || '/placeholder.svg'}
+              alt={booking.event.title}
+              className="w-20 h-28 rounded-lg object-cover"
+            />
+            <div className="flex-1 min-w-0">
+              <div className="flex items-start justify-between gap-2">
+                <h3 className="font-semibold text-foreground line-clamp-1">{booking.event.title}</h3>
+                <span className={`flex-shrink-0 px-2 py-0.5 text-xs font-medium rounded-full ${
+                  booking.status === 'confirmed' 
+                    ? 'bg-success/10 text-success'
+                    : booking.status === 'cancelled'
+                      ? 'bg-destructive/10 text-destructive'
+                      : 'bg-warning/10 text-warning'
+                }`}>
+                  {booking.status}
+                </span>
+              </div>
+              
+              <div className="mt-2 space-y-1 text-sm text-muted-foreground">
+                <p className="flex items-center gap-1.5">
+                  <Calendar className="h-3.5 w-3.5" />
+                  {formatDate(booking.schedule.start_time)}
+                </p>
+                <p className="flex items-center gap-1.5">
+                  <Clock className="h-3.5 w-3.5" />
+                  {formatTime(booking.schedule.start_time)}
+                </p>
+                <p className="flex items-center gap-1.5">
+                  <MapPin className="h-3.5 w-3.5" />
+                  <span className="truncate">{booking.schedule.venue?.name}</span>
+                </p>
+              </div>
+
+              <div className="mt-3 flex items-center justify-between">
+                <div className="flex items-center gap-1 text-sm">
+                  <Ticket className="h-3.5 w-3.5 text-primary" />
+                  <span className="text-muted-foreground">#{booking.booking_number?.slice(-8)}</span>
+                </div>
+                <span className="font-semibold text-foreground">{formatCurrency(booking.final_amount)}</span>
+              </div>
+            </div>
+            <ChevronRight className="h-5 w-5 text-muted-foreground self-center" />
+          </div>
+        </Link>
+        
         {isExpired && (
-          <div className="absolute inset-0 bg-background/30 backdrop-blur-[1px] z-10 flex items-center justify-center">
-            <span className="bg-muted/90 text-muted-foreground px-3 py-1 rounded-full text-xs font-medium">
-              Expired
-            </span>
+          <div className="absolute inset-0 bg-background/40 backdrop-blur-[2px] rounded-xl flex items-center justify-center">
+            <Button
+              onClick={(e) => handleRebook(e, booking.event_id)}
+              className="bg-primary hover:bg-primary/90 text-primary-foreground gap-2"
+              size="sm"
+            >
+              <RotateCcw className="h-4 w-4" />
+              Rebook
+            </Button>
           </div>
         )}
-        <div className="flex gap-4">
-          <img
-            src={booking.event.image_url || '/placeholder.svg'}
-            alt={booking.event.title}
-            className="w-20 h-28 rounded-lg object-cover"
-          />
-          <div className="flex-1 min-w-0">
-            <div className="flex items-start justify-between gap-2">
-              <h3 className="font-semibold text-foreground line-clamp-1">{booking.event.title}</h3>
-              <span className={`flex-shrink-0 px-2 py-0.5 text-xs font-medium rounded-full ${
-                booking.status === 'confirmed' 
-                  ? 'bg-success/10 text-success'
-                  : booking.status === 'cancelled'
-                    ? 'bg-destructive/10 text-destructive'
-                    : 'bg-warning/10 text-warning'
-              }`}>
-                {booking.status}
-              </span>
-            </div>
-            
-            <div className="mt-2 space-y-1 text-sm text-muted-foreground">
-              <p className="flex items-center gap-1.5">
-                <Calendar className="h-3.5 w-3.5" />
-                {formatDate(booking.schedule.start_time)}
-              </p>
-              <p className="flex items-center gap-1.5">
-                <Clock className="h-3.5 w-3.5" />
-                {formatTime(booking.schedule.start_time)}
-              </p>
-              <p className="flex items-center gap-1.5">
-                <MapPin className="h-3.5 w-3.5" />
-                <span className="truncate">{booking.schedule.venue?.name}</span>
-              </p>
-            </div>
-
-            <div className="mt-3 flex items-center justify-between">
-              <div className="flex items-center gap-1 text-sm">
-                <Ticket className="h-3.5 w-3.5 text-primary" />
-                <span className="text-muted-foreground">#{booking.booking_number?.slice(-8)}</span>
-              </div>
-              <span className="font-semibold text-foreground">{formatCurrency(booking.final_amount)}</span>
-            </div>
-          </div>
-          <ChevronRight className="h-5 w-5 text-muted-foreground self-center" />
-        </div>
-      </Link>
+      </div>
     );
   };
 
