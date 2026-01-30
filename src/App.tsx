@@ -17,6 +17,11 @@ import MoviesPage from "./pages/MoviesPage";
 import EventsPage from "./pages/EventsPage";
 import TravelPage from "./pages/TravelPage";
 import CategoryPage from "./pages/CategoryPage";
+import HelpCenterPage from "./pages/HelpCenterPage";
+import ContactPage from "./pages/ContactPage";
+import RefundPolicyPage from "./pages/RefundPolicyPage";
+import TermsPage from "./pages/TermsPage";
+import PrivacyPolicyPage from "./pages/PrivacyPolicyPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -45,6 +50,11 @@ const App = () => (
           <Route path="/profile" element={<ProfilePage />} />
           <Route path="/settings" element={<SettingsPage />} />
           <Route path="/search" element={<SearchPage />} />
+          <Route path="/help" element={<HelpCenterPage />} />
+          <Route path="/contact" element={<ContactPage />} />
+          <Route path="/refund-policy" element={<RefundPolicyPage />} />
+          <Route path="/terms" element={<TermsPage />} />
+          <Route path="/privacy" element={<PrivacyPolicyPage />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
