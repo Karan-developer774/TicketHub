@@ -64,19 +64,28 @@ export default function MyBookingsPage() {
   const upcomingBookings = bookings.filter(b => new Date(b.schedule.start_time) > now && b.status !== 'cancelled');
   const pastBookings = bookings.filter(b => new Date(b.schedule.start_time) <= now || b.status === 'cancelled');
 
-  const BookingCard = ({ booking }: { booking: BookingWithDetails }) => {
-    const isPast = new Date(booking.schedule.start_time) <= now;
-    
+  const BookingCard = ({ booking, isExpired = false }: { booking: BookingWithDetails; isExpired?: boolean }) => {
     return (
       <Link
         to={`/bookings/${booking.id}`}
-        className="block bg-card border border-border rounded-xl p-4 hover:border-primary/50 transition-colors"
+        className={`block bg-card border border-border rounded-xl p-4 transition-colors relative overflow-hidden ${
+          isExpired 
+            ? 'opacity-60 grayscale' 
+            : 'hover:border-primary/50'
+        }`}
       >
+        {isExpired && (
+          <div className="absolute inset-0 bg-background/30 backdrop-blur-[1px] z-10 flex items-center justify-center">
+            <span className="bg-muted/90 text-muted-foreground px-3 py-1 rounded-full text-xs font-medium">
+              Expired
+            </span>
+          </div>
+        )}
         <div className="flex gap-4">
           <img
             src={booking.event.image_url || '/placeholder.svg'}
             alt={booking.event.title}
-            className={`w-20 h-28 rounded-lg object-cover ${isPast ? 'opacity-60' : ''}`}
+            className="w-20 h-28 rounded-lg object-cover"
           />
           <div className="flex-1 min-w-0">
             <div className="flex items-start justify-between gap-2">
@@ -181,7 +190,7 @@ export default function MyBookingsPage() {
             ) : (
               <div className="space-y-4">
                 {pastBookings.map((booking) => (
-                  <BookingCard key={booking.id} booking={booking} />
+                  <BookingCard key={booking.id} booking={booking} isExpired={true} />
                 ))}
               </div>
             )}
